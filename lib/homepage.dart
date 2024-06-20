@@ -14,7 +14,7 @@ class HomePage extends StatefulWidget {
 List notes = [];
 final hiveNote = Hive.box('hiveNote');
 final hivePassword = Hive.box('hivePassword');
-int password = hivePassword.get('password') ?? 0;
+String password = hivePassword.get('password').toString() ?? "0";
 bool logged = false;
 String passwordInput1 = "";
 String passwordInput2 = "";
@@ -72,7 +72,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     getData();
-    if (password == 0) {
+    if (password == "0" || password == "" || password == "null") {
       // kalau belum ada password
       return Scaffold(
           resizeToAvoidBottomInset: true,
@@ -161,9 +161,9 @@ class _HomePageState extends State<HomePage> {
                       onPressed: () {
                         if (passwordInput1 == passwordInput2) {
                           hivePassword.put(
-                              'password', int.parse(passwordInput1.toString()));
+                              'password', (passwordInput1.toString()));
                           setState(() {
-                            password = int.parse(passwordInput1.toString());
+                            password = (passwordInput1.toString());
                             logged = true;
                           });
                         }
@@ -344,10 +344,10 @@ class _HomePageState extends State<HomePage> {
                                               passwordInput2) {
                                             hivePassword.put(
                                                 'password',
-                                                int.parse(
+                                                (
                                                     passwordInput1.toString()));
                                             setState(() {
-                                              password = int.parse(
+                                              password = (
                                                   passwordInput1.toString());
                                               logged = true;
                                               _selectedIndex = 0;
@@ -406,7 +406,7 @@ class _HomePageState extends State<HomePage> {
                                         _selectedIndex = 0;
                                         logged = false;
                                         hivePassword.delete('password');
-                                        password = 0;
+                                        password = "0";
                                       });
                                     },
                                     child: const Text('Delete PIN',
